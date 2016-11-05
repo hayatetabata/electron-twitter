@@ -69,4 +69,27 @@ module.exports = class MainContent extends React.Component {
    }
 }
 
+componentDidMount(){
+   T.get('statuses/home_timeline')
+      .catch(error => {
+         console.log(error);
+      })
+      .then((result) => {
+         this.setState({tweets: result.data});
+         this.connectStream();
+      });
+}
 
+connectStream(){
+   const stream = T.stream('user');
+
+   stream.on('error',(error) =>{
+      throw error;
+   });
+
+   stream.on('tweet', (tweet) =>{
+      const tweets = this.state.tweets;
+      const newTweets = [tweet].concat(tweets);
+      this.setState({tweets:newTweets});
+   });
+}
