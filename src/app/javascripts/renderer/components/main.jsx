@@ -51,4 +51,22 @@ class Timeline extends React.Component{
    }
 }
 
+module.exports = class MainContent extends React.Component {
+   constructor(props){
+      super(props);
+      this.state = {tweets: []};
+   }
+
+   render(){
+      return (
+         <div className='window'>
+            <div id='window-content' 
+            className='window-content'>
+               <Timeline tweets={this.state.tweets}/>
+            </div>
+         </div>
+      );
+   }
+}
+
 
