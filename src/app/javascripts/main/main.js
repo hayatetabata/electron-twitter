@@ -1,4 +1,4 @@
-const TimelineWindow = require('./timeline-Window');
+const TimelineWindow = require('./timeline-window');
 
 class Main {
    constructor(){

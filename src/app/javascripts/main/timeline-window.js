@@ -17,11 +17,11 @@ module.exports = class TimelineWindow{
          x:0,
          y:0,
          width:400,
-         height:800
+         height:600
       });
 
       this.window.loadURL(
-         'file://${__dirname}/../../html/main.html'
+         'file://${__dirnAme}/../../html/main.html'
       );
    }
 };
