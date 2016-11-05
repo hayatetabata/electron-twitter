@@ -21,7 +21,7 @@ module.exports = class TimelineWindow{
       });
 
       this.window.loadURL(
-         'file://${__dirnAme}/../../html/main.html'
+         'file://'+ __dirname + '/../../html/main.html'
       );
    }
 };
