@@ -1,14 +1,15 @@
 {
-   "name":"ElectronTwitter",
-   "version":"1.0.0",
-   "description":"Electronを使ったサンプルアプリケーション",
-   "author":"Taichiro Yoshida",
-   "main":"app/javascripts/main/main.js",
-   "dependencies":{
-      "babel-plugin-transform-react-jsx":"6.8.0",
-      "babel-register":"6.9.0",
-      "react":"15.1.0",
-      "react-dom":"15.1.0",
-      "twit":"2.2.4"
-   }
+  "name": "electron-twitter",
+  "version": "1.0.0",
+  "description": "twitter client from electron",
+  "author": "subaru",
+  "license": "ISC",
+  "main":"./app/javascripts/main/main.js",
+  "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-register": "^6.14.0",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "twit": "2.2.4"
+  }
 }

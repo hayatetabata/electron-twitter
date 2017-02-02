@@ -67,7 +67,6 @@ module.exports = class MainContent extends React.Component {
          </div>
       );
    }
-}
 
 componentDidMount(){
    T.get('statuses/home_timeline')
@@ -92,4 +91,5 @@ connectStream(){
       const newTweets = [tweet].concat(tweets);
       this.setState({tweets:newTweets});
    });
-}
+  }
+};
