@@ -1,12 +1,12 @@
 const React = require('react');
-const T = require('../service/twitter');
+const T = require('../services/twitter');
 
 class Tweet extends React.Component {
    render(){
       const isRetweet = this.props.tweet.
          hasOwnProperty('retweeted_status');
       const status = isRetweet ? this.props.tweet.
-         retweeted_status : this.props.tweet.
+         retweeted_status : this.props.tweet;
       const media = status.entities.media || [];
       const firstImage = media.find((item) => {
          return item.type === 'photo';
@@ -26,10 +26,10 @@ class Tweet extends React.Component {
                   @{status.user.screen_name}
                </span>
                <p className='text'>{status.text}</p>
-               {firstImage?
+               {firstImage ?
                   <img src={firstImage.media_url_https}
                      className='img-rounded media-object media-img' />
-                     : null }
+                     : null}
             </div>
          </li>
       );
@@ -68,28 +68,28 @@ module.exports = class MainContent extends React.Component {
       );
    }
 
-componentDidMount(){
-   T.get('statuses/home_timeline')
-      .catch(error => {
-         console.log(error);
-      })
-      .then((result) => {
-         this.setState({tweets: result.data});
-         this.connectStream();
-      });
+    componentDidMount(){
+        T.get('statuses/home_timeline')
+        .catch(error => {
+            console.log(error);
+         })
+        .then((result) => {
+             this.setState({tweets: result.data});
+            this.connectStream();
+         });
+    }
+
+    connectStream(){
+        const stream = T.stream('user');
+
+        stream.on('error',(error) =>{
+            throw error;
+        });
+
+        stream.on('tweet', (tweet) =>{
+            const tweets = this.state.tweets;
+            const newTweets = [tweet].concat(tweets);
+            this.setState({tweets:newTweets});
+        });
+    }
 }
-
-connectStream(){
-   const stream = T.stream('user');
-
-   stream.on('error',(error) =>{
-      throw error;
-   });
-
-   stream.on('tweet', (tweet) =>{
-      const tweets = this.state.tweets;
-      const newTweets = [tweet].concat(tweets);
-      this.setState({tweets:newTweets});
-   });
-  }
-};
