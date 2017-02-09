@@ -1,5 +1,6 @@
 const React = require('react');
 const T = require('../services/twitter');
+const {dialog} = require('electron').remote;
 
 module.exports = class FormContent extends React.Component {
     constructor(props) {
@@ -36,31 +37,29 @@ module.exports = class FormContent extends React.Component {
     }
 
     handleSendButtonClick() {
-        let params = {status: this.state.text.trim()};
+        //ここに処理を書いていきます。書き終わったら消去。
+        dialog.showMessageBox({
+            type: 'question',
+            title: '確認',
+            message: 'ツイートしてもよろしいでしょうか？',
+            buttons: ['はい', 'いいえ'],
+            defaultId: 0,
+            cancelId: 1
+        }, (index) => {
+            if (index === 1) {
+                return;
+            }
 
-        T.post('statuses/update', params)
-        .catch(error => {
-            console.log(error);
-        })
-        .then(result => {
-            this.setState({text: ''});
+            let params = {status: this.state.text.trim()};
+
+            T.post('statuses/update', params)
+            .catch(error => {
+                 console.log(error);
+             })
+            .then(result => {
+                this.setState({text: ''});
+            });
+
         });
     }
-
-};
-/*
-handleTextChange(e) {
-    this.setState({text: e.target.value});
-}
-
-handleSendButtonClick() {
-    let params = {status: this.state.text.trim()};
-
-    T.post('statuses/update', params)
-     .catch(error => {
-        console.log(error);
-     })
-     .then(result => {
-        this.setState({text: ''});
-     });
-}*/
+}; 
