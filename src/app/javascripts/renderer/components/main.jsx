@@ -74,7 +74,7 @@ module.exports = class MainContent extends React.Component {
             console.log(error);
          })
         .then((result) => {
-             this.setState({tweets: result.data});
+            this.setState({tweets: result.data});
             this.connectStream();
          });
     }
