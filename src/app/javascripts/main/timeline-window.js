@@ -1,14 +1,24 @@
-const{app,BrowserWindow} = require('electron');
+const {app,BrowserWindow, ipcMain} = require('electron');
 
 module.exports = class TimelineWindow{
    constructor(){
       this.window = null;
+      this.newMentionsCount = 0;
       this.start();
    }
 
    start(){
       app.on('ready',() => {
          this.createWindow(); 
+      });
+
+      ipcMain.on('newMention', () => {
+        if (this.window.isFocused()){
+            return;
+        }
+
+        this.newMentionsCount++;
+        this.updateBadge();
       });
    }
 
@@ -19,9 +29,17 @@ module.exports = class TimelineWindow{
          width:400,
          height:600
       });
+      this.window.on('focus', () => {
+        this.newMentionCount = 0;
+        this.updateBadge();
+      });
 
       this.window.loadURL(
          'file://'+ __dirname + '/../../html/main.html'
       );
+   }
+
+   updateBadge() {
+       app.setBadgeCount(this.newMentionsCount);
    }
 };

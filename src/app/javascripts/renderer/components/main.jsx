@@ -119,5 +119,6 @@ module.exports = class MainContent extends React.Component {
                 body: tweet.text,
                 icon: tweet.user.profile_image_url_https
             });
+            ipcRenderer.send('newMention');
     }
 }
