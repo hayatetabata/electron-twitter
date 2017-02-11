@@ -3,12 +3,15 @@ const {screen, nativeImage} = require('electron').remote;
 
 module.exports = class Screenshot {
     static capture() {
+    //ここまでは処理が読み込めている。
         return Screenshot.getStream()
         .catch(error => {
             console.log(error);
         })
         .then(Screenshot.getVideo)
         .then((video) => {
+        //ここからの処理が読み込まれていない
+        console.log('OK');
             const canvas = document.createElement('canvas');
             const videoWidth = video.videoWidth;
             const videoHeight = video.videoHeight;
@@ -17,7 +20,6 @@ module.exports = class Screenshot {
             canvas.getContent('2d').drawImage(
                 video, 0, 0, videoWidth, videoHeight,
                 0, 0, videoWidth, videoHeight);
-
             return nativeImage.createFormDataURL(
                 canvas.toDataURL());
         });
@@ -33,7 +35,6 @@ module.exports = class Screenshot {
                 if (error) {
                     throw error;
                 }
-
                 for (let i = 0; i < sources.length; ++i) {
                     if (sources[i].id.indexOf("screen") !== -1) {
                         navigator.webkitGetUserMedia({
@@ -48,7 +49,8 @@ module.exports = class Screenshot {
                                     maxHeight: bounds.height * scale,
                                 }
                             }
-                        }, onFulfilled, onrejected);
+                        }, onFulfilled, onRejected);
+                        console.log('return');
                         return;
                     }
                 }

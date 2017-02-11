@@ -39,8 +39,8 @@ module.exports = class FormWindow {
             resizable: false,
             minimizable: false,
             maximizable: false,
-            width: 300,
-            height: 250,
+            width: 600,//300
+            height: 500,//250
             show: false
         });
 
