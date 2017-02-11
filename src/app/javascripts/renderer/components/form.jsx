@@ -86,7 +86,7 @@ module.exports = class FormContent extends React.Component {
             });
 
         });
-        //TODO coding
+
         new Promise((onFulfilled, onRejected) => {
             if (this.state.nativeImage === null) {
                 onFulfilled();
