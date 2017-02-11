@@ -86,6 +86,39 @@ module.exports = class FormContent extends React.Component {
             });
 
         });
+        //TODO coding
+        new Promise((onFulfilled, onRejected) => {
+            if (this.state.nativeImage === null) {
+                onFulfilled();
+                return;
+            }
+
+            return T.post('media/upload', {
+                media_data: this.state.nativeImage.toPng().
+                            toString('base64')
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .then(result => {
+                onFulfilled(result.data.media_id_string);
+            })
+            .then(mediaId => {
+                let params = {status: this.state.text.trim()};
+                if (mediaId) {
+                    params.media_ids = [mediaId];
+                }
+
+                T.post('statuses/update', params)
+                .catch(error => {
+                    console.log(error);
+                })
+                .then(result => {
+                    this.setState({text: '', nativeImage: null});
+                    ipcRenderer.send('finishTweet');
+                });
+            })
+        });
     }
 
     handleTextBlur() {
@@ -96,7 +129,13 @@ module.exports = class FormContent extends React.Component {
     }
 
     handleCaptureButtonClick(){
-    //TODO write following
-    
+        Screenshot.capture()
+        .catch(error => {
+            console.log(error);
+        })
+        .then(nativeImage => {
+            console.log(nativeImage);
+            this.setState({nativeImage: nativeImage});
+        });
     }
 }; 
