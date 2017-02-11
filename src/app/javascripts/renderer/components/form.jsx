@@ -1,6 +1,7 @@
 const React = require('react');
 const T = require('../services/twitter');
 const {dialog} = require('electron').remote;
+const {ipcRenderer} = require('electron');
 const Draft = require('../services/draft');
 const Screenshot = require('../services/screenshot');
 
@@ -117,7 +118,7 @@ module.exports = class FormContent extends React.Component {
                     this.setState({text: '', nativeImage: null});
                     ipcRenderer.send('finishTweet');
                 });
-            })
+            });
         });
     }
 

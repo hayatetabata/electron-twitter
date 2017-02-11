@@ -10,17 +10,15 @@ module.exports = class Screenshot {
         })
         .then(Screenshot.getVideo)
         .then((video) => {
-        //ここからの処理が読み込まれていない
-        console.log('OK');
             const canvas = document.createElement('canvas');
             const videoWidth = video.videoWidth;
             const videoHeight = video.videoHeight;
             canvas.width = videoWidth;
             canvas.height = videoHeight;
-            canvas.getContent('2d').drawImage(
+            canvas.getContext('2d').drawImage(
                 video, 0, 0, videoWidth, videoHeight,
                 0, 0, videoWidth, videoHeight);
-            return nativeImage.createFormDataURL(
+            return nativeImage.createFromDataURL(
                 canvas.toDataURL());
         });
     }
@@ -50,7 +48,6 @@ module.exports = class Screenshot {
                                 }
                             }
                         }, onFulfilled, onRejected);
-                        console.log('return');
                         return;
                     }
                 }
@@ -64,11 +61,11 @@ module.exports = class Screenshot {
         video.src = URL.createObjectURL(stream);
 
         return new Promise((onFulfilled, onRejected) => {
-            video.addEventListener('player', () => {
+            video.addEventListener('playing', () => {
                 onFulfilled(video);
             });
             video.addEventListener('error', (error) => {
-                onrejected(error);
+                onRejected(error);
             });
         });
     }
