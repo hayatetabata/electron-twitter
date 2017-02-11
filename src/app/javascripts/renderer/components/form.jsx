@@ -1,11 +1,22 @@
 const React = require('react');
 const T = require('../services/twitter');
 const {dialog} = require('electron').remote;
+const Draft = require('../services/draft');
 
 module.exports = class FormContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {text: ''};
+    }
+
+    componentDidMount() {
+        Draft.read()
+        .catch(error => {
+            console.log(error);
+        })
+        .then((text) => {
+            this.setState({text: text});
+        });
     }
 
     render() {
@@ -16,7 +27,8 @@ module.exports = class FormContent extends React.Component {
                         <textarea style={{width: 300, height: 250}}
                                   value={this.state.text}
                                   onChange={this.handleTextChange.
-                                            bind(this)}/>
+                                            bind(this)}
+                                  onBlur={this.handleTextBlur.bind(this)}/>
                     </div>
                 </div>
                 <footer className='toolbar toolbar-footer'>
@@ -37,7 +49,6 @@ module.exports = class FormContent extends React.Component {
     }
 
     handleSendButtonClick() {
-        //ここに処理を書いていきます。書き終わったら消去。
         dialog.showMessageBox({
             type: 'question',
             title: '確認',
@@ -60,6 +71,13 @@ module.exports = class FormContent extends React.Component {
                 this.setState({text: ''});
             });
 
+        });
+    }
+
+    handleTextBlur() {
+        Draft.write(this.state.text)
+        .catch(error => {
+            console.log(error);
         });
     }
 }; 
