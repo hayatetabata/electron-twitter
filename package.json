@@ -5,6 +5,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "devtron": "^1.4.0",
     "electron-prebuilt": "1.2.8"
   },
   "dependencies": {
